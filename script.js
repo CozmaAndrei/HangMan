@@ -1,55 +1,66 @@
-const guessTheWord = document.getElementById("guessTheWord");
-const winOrNotMessage = document.getElementById("winOrNotMessage");
-const theLives = document.getElementById("theLives");
-const theWord = ["programmer", "wellcode", "code"]
+const guessWordOptions = document.getElementById("guessWordOptions");
+const message = document.getElementById("message");
+const numberOfLives = document.getElementById("numberOfLives");
+const wordOptions = ["programmer", "wellcode", "code"]
 let wordHidden = [];
+const theNumberOfLettersFromAlphabet = 26;
 let lives = 7;
-const alphabetArray = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
-const randomWordOfGuess = theWord[Math.floor(Math.random() * theWord.length)];
-let characters = randomWordOfGuess.length;
+const alphabetArray = [];
+const randomWordOptions = wordOptions[Math.floor(Math.random() * wordOptions.length)];
 
-hiddenRandomWord();
-
-function hiddenRandomWord() {
-    for (let i = 0; i < randomWordOfGuess.length; ++i) {
-        wordHidden[i] = "_";
-    }
-    guessTheWord.innerHTML = `Guess the word: ${wordHidden.join("")}`;
-    theLives.innerHTML = `Your lives: ${lives} ♥`;
+function mainFunction() {
+    buildTheAlphabet();
+    displayHiddenWord();
+    createAlphabetButtons();
 }
 
-createAlphabetAndFindTheHiddenWord();
+function buildTheAlphabet() {
+    for (let i = 0; i < theNumberOfLettersIFromAlphabet; ++i) {
+        alphabetArray.push(String.fromCharCode(97 + i));
+    }
+}
 
-function createAlphabetAndFindTheHiddenWord() {
-    for (let i = 0; i < 26; ++i) {
+function displayHiddenWord() {
+    for (let i = 0; i < randomWordOptions.length; ++i) {
+        wordHidden[i] = "_";
+    }
+    guessWordOptions.innerHTML = `Guess the word: ${wordHidden.join("")}`;
+    numberOfLives.innerHTML = `Your lives: ${lives} ♥`;
+}
+
+function createAlphabetButtons() {
+    for (let i = 0; i < alphabetArray.length; ++i) {
         const buttons = document.createElement("button");
         document.getElementById("firstContainer").appendChild(buttons);
         buttons.className = "btn btn-info btn-outline-dark";
         buttons.innerHTML = `${alphabetArray[i]}`;
-        let letter = buttons.innerHTML;
-        buttons.addEventListener("click", () => {
-            buttons.setAttribute("disabled", "");
-            if(randomWordOfGuess.includes(letter)) {
-                for (let j = 0; j < randomWordOfGuess.length; ++j) {
-                    if (randomWordOfGuess[j] === letter) {
-                        wordHidden[j] = letter;
-                        guessTheWord.innerHTML = `Guess the word: ${wordHidden.join("")}`;
-                        --characters;
-                        if (characters === 0) {
-                            winOrNotMessage.innerHTML = "YOU WIN !";
-                            disabledAlphabet();
-                        }
-                    }
-                }
-            } else {
-                --lives;
-                theLives.innerHTML = `Your lives: ${lives} ♥`;
-                if (lives < 1) {
-                    winOrNotMessage.innerHTML = "YOU LOSE !";
+        buttons.addEventListener("click", findTheHiddenWord);
+    }
+}
+
+function findTheHiddenWord(event) {
+    let characters = randomWordOptions.length;
+    let letter = event.target.innerHTML;
+    event.target.setAttribute("disabled", "");
+    if(randomWordOptions.includes(letter)) {
+        for (let j = 0; j < randomWordOptions.length; ++j) {
+            if (randomWordOptions[j] === letter) {
+                wordHidden[j] = letter;
+                guessWordOptions.innerHTML = `Guess the word: ${wordHidden.join("")}`;
+                --characters;
+                if (characters === 0) {
+                    message.innerHTML = "YOU WIN !";
                     disabledAlphabet();
                 }
             }
-        });
+        }
+    } else {
+        --lives;
+        numberOfLives.innerHTML = `Your lives: ${lives} ♥`;
+        if (lives < 1) {
+            message.innerHTML = "YOU LOSE !";
+            disabledAlphabet();
+        }
     }
 }
 
@@ -58,3 +69,5 @@ function disabledAlphabet() {
         elem.disabled = true;
     });
 }
+
+mainFunction();
