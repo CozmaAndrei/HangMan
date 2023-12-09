@@ -4,19 +4,20 @@ const numberOfLives = document.getElementById("numberOfLives");
 const wordOptions = ["programmer", "wellcode", "code"]
 let wordHidden = [];
 const theNumberOfLettersFromAlphabet = 26;
+const ASCIIposition = 97;
 let lives = 7;
 const alphabetArray = [];
 const randomWordOptions = wordOptions[Math.floor(Math.random() * wordOptions.length)];
 
-function mainFunction() {
+function setupGame() {
     buildTheAlphabet();
     displayHiddenWord();
     createAlphabetButtons();
 }
 
 function buildTheAlphabet() {
-    for (let i = 0; i < theNumberOfLettersIFromAlphabet; ++i) {
-        alphabetArray.push(String.fromCharCode(97 + i));
+    for (let i = 0; i < theNumberOfLettersFromAlphabet; ++i) {
+        alphabetArray.push(String.fromCharCode(ASCIIposition + i));
     }
 }
 
@@ -70,4 +71,4 @@ function disabledAlphabet() {
     });
 }
 
-mainFunction();
+setupGame();
